@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Successful</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("1.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #paymentContainer {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #homeButton {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="paymentContainer">
+        <h1>Payment Successful</h1>
+        <p>Thank you for your payment!</p>
+        <button id="homeButton">Home</button>
+    </div>
+
+    <script>
+        document.getElementById("homeButton").addEventListener("click", function() {
+            // Redirect to another page
+            window.location.href = "search.html";
+        });
+    </script>
+</body>
+</html>

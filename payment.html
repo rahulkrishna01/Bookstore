@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("1.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+
+        #bookContainer {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #bookContainer img {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        #paymentForm {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        #paymentForm label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #paymentForm input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        #paymentForm input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Payment Page</h1>
+    
+    <h2>Book Details</h2>
+    <div id="bookContainer"></div>
+
+    <h2>Payment Form</h2>
+    <form id="paymentForm">
+        <label for="cardNumber">Card Number:</label>
+        <input type="text" id="cardNumber" name="cardNumber" value="1234 5678 9012 3456" required><br>
+
+        <label for="expiryDate">Expiry Date:</label>
+        <input type="text" id="expiryDate" name="expiryDate" value="12/23" required><br>
+
+        <label for="cvv">CVV:</label>
+        <input type="text" id="cvv" name="cvv" value="123" required><br>
+
+        <input type="submit" value="Pay">
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Retrieve the book ID from the URL parameter
+            var queryString = window.location.search;
+            var urlParams = new URLSearchParams(queryString);
+            var bookId = urlParams.get("bookId");
+
+            // Make a request to the Google Books API to fetch the book details
+            var apiKey = "AIzaSyD7TCL-QN4UgpxOKUEpit0Br3ivh_KEVl8";
+            var url = "https://www.googleapis.com/books/v1/volumes/" + bookId + "?key=" + apiKey;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Process the book details here
+                    displayBookDetails(data);
+                })
+                .catch(error => {
+                    console.log("Error fetching book details:", error);
+                });
+        });
+
+        function displayBookDetails(data) {
+            var bookContainer = document.getElementById("bookContainer");
+
+            var book = data.volumeInfo;
+            var title = book.title;
+            var authors = book.authors ? book.authors.join(", ") : "Unknown";
+            var description = book.description ? book.description : "No description available";
+            var thumbnail = book.imageLinks ? book.imageLinks.thumbnail : "https://via.placeholder.com/128x192.png?text=No+Image";
+
+            var titleElement = document.createElement("h3");
+            titleElement.textContent = title;
+
+            var authorsElement = document.createElement("p");
+            authorsElement.textContent = "Author(s): " + authors;
+
+            var descriptionElement = document.createElement("p");
+            descriptionElement.textContent = description;
+
+            var thumbnailElement = document.createElement("img");
+            thumbnailElement.src = thumbnail;
+            thumbnailElement.alt = "Book Thumbnail";
+
+            bookContainer.appendChild(titleElement);
+            bookContainer.appendChild(authorsElement);
+            bookContainer.appendChild(descriptionElement);
+            bookContainer.appendChild(thumbnailElement);
+        }
+
+        document.getElementById("paymentForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Redirect to the payment successful page
+            window.location.href = "sucessfull.html";
+        });
+    </script>
+</body>
+</html>

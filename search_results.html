@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("1.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        #resultsContainer {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .book-item {
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .book-item h3 {
+            margin-top: 0;
+        }
+
+        .book-item p {
+            margin: 0;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var query = decodeURIComponent(getParameterByName("query"));
+            var apiKey = "AIzaSyD7TCL-QN4UgpxOKUEpit0Br3ivh_KEVl8";
+var url = "https://www.googleapis.com/books/v1/volumes?q=" + query + "&key=" + apiKey;
+
+            $.get(url, function(data) {
+                displaySearchResults(data);
+            });
+        });
+
+        function getParameterByName(name) {
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(window.location.href);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        function displaySearchResults(data) {
+    var resultsContainer = $("#resultsContainer");
+
+    if (data.totalItems === 0) {
+        resultsContainer.text("No results found.");
+    } else {
+        var books = data.items;
+        for (var i = 0; i < books.length; i++) {
+            var book = books[i];
+            var title = book.volumeInfo.title;
+            var authors = book.volumeInfo.authors ? book.volumeInfo.authors.join(", ") : "Unknown";
+            var description = book.volumeInfo.description ? book.volumeInfo.description : "No description available";
+            var thumbnail = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : "https://via.placeholder.com/128x192.png?text=No+Image";
+
+            var bookItem = $("<div>").addClass("book-item");
+            var titleElement = $("<h3>").text(title);
+            var authorsElement = $("<p>").text("Author(s): " + authors);
+            var descriptionElement = $("<p>").text(description);
+            var thumbnailElement = $("<img>").attr("src", thumbnail);
+
+            var detailsLink = $("<a>").attr("href", "book_details.html?id=" + book.id).text("View Details");
+
+            bookItem.append(titleElement, authorsElement, descriptionElement, thumbnailElement, detailsLink);
+            resultsContainer.append(bookItem);
+        }
+    }
+}
+
+                
+    </script>
+</head>
+<body>
+    <h1>Search Results</h1>
+    <div id="resultsContainer"></div>
+</body>
+</html>

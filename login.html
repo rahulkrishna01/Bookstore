@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Library Management System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('background.jpg'); /* Replace 'background-image.jpg' with the URL or path to your background image */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 300px;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.8); /* Set the background color with transparency */
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #217dbb;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
+    <form id="login-form">
+      <input type="text" name="username" placeholder="Username"  required>
+      <input type="password" name="password" placeholder="Password"  required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <script>
+    // Handle login form submission
+    document.getElementById('login-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      // Get form values
+      var username = document.getElementById('login-form').elements.username.value;
+      var password = document.getElementById('login-form').elements.password.value;
+      // Check the static login credentials
+      if (username === 'DevRev' && password === 'DevRevpassword') {
+        alert('Login successful!');
+        // Redirect to the next page
+        window.location.href = 'search.html';
+      } else {
+        alert('Invalid username or password!');
+      }
+    });
+  </script>
+</body>
+</html>

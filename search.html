@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("1.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .search-container {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .search-container input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px; /* Add margin-bottom for spacing */
+        }
+
+        .search-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px; /* Add margin-top for spacing */
+        }
+
+        .search-container button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script>
+        function searchBooks() {
+            var query = document.getElementById("searchQuery").value;
+            var url = "https://www.googleapis.com/books/v1/volumes?q=" + query;
+
+            // Redirect to the next page with the search query as a parameter
+            window.location.href = "search_results.html?query=" + encodeURIComponent(query);
+        }
+
+        // Function to display the books in the search results
+        function displayBooks(data) {
+            var booksContainer = $("#booksContainer");
+            booksContainer.empty();
+
+            var books = data.items;
+            if (books.length === 0) {
+                booksContainer.append("<p>No books found.</p>");
+                return;
+            }
+
+            for (var i = 0; i < books.length; i++) {
+                var book = books[i].volumeInfo;
+                var title = book.title;
+                var authors = book.authors ? book.authors.join(", ") : "Unknown";
+                var description = book.description ? book.description : "No description available";
+                var thumbnail = book.imageLinks ? book.imageLinks.thumbnail : "https://via.placeholder.com/128x192.png?text=No+Image";
+                var retailPrice = books[i].saleInfo.retailPrice ? books[i].saleInfo.retailPrice.amount.toFixed(2) + " " + books[i].saleInfo.retailPrice.currencyCode : "Not available";
+
+                var bookItem = $("<div class='book-item'>");
+                var titleElement = $("<h2>").text(title);
+                var authorsElement = $("<p>").text("Author(s): " + authors);
+                var descriptionElement = $("<p>").text(description);
+                var thumbnailElement = $("<img>").attr("src", thumbnail);
+                var retailPriceElement = $("<p>").text("Retail Price: " + retailPrice);
+
+                bookItem.append(titleElement, authorsElement, descriptionElement, thumbnailElement, retailPriceElement);
+                booksContainer.append(bookItem);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Book Search</h1>
+    <div class="search-container">
+        <input type="text" id="searchQuery" placeholder="Enter book title or author">
+        <br> <!-- Add a line break for spacing -->
+        <button onclick="searchBooks()">Search</button>
+    </div>
+</body>
+</html>

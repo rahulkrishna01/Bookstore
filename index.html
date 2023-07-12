@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Library Management System - Welcome</title>
+  <style>
+     body {
+      background-image: url('background.jpg'); /* Replace 'background.jpg' with the path to your background image */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    #loading-animation {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #3498db;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 1.5s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    #content {
+      display: none;
+      text-align: center;
+      margin-top: 200px;
+    }
+
+    h1 {
+      color: rgb(249, 252, 253);
+    }
+
+    #next-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="loading-animation">
+    <div class="spinner"></div>
+  </div>
+
+  <div id="content">
+    <h1>Welcome to Library Management System</h1>
+    <button id="next-button">Next</button>
+  </div>
+
+  <script>
+    // Show the loading animation
+    document.getElementById('loading-animation').style.display = 'flex';
+
+    // Hide the loading animation and show the content after 5 seconds
+    setTimeout(function() {
+      document.getElementById('loading-animation').style.display = 'none';
+      document.getElementById('content').style.display = 'block';
+    }, 5000);
+
+    // Handle the "Next" button click event
+    document.getElementById('next-button').addEventListener('click', function() {
+      // Redirect to the next page
+      window.location.href = 'next-page.html'; // Replace 'next-page.html' with the actual URL of your next page
+    });
+  </script>
+</body>
+</html>

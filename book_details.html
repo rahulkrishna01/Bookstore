@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Details</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Retrieve the book ID from the URL parameter
+            var bookId = getParameterByName("id");
+
+            // Make a request to the Google Books API to fetch the book details
+            var apiKey = "AIzaSyD7TCL-QN4UgpxOKUEpit0Br3ivh_KEVl8";
+            var url = "https://www.googleapis.com/books/v1/volumes/" + bookId + "?key=" + apiKey;
+
+            $.get(url, function(data) {
+                // Process the book details here
+                displayBookDetails(data);
+            });
+        });
+
+        // Helper function to get the value of a URL parameter by name
+        function getParameterByName(name) {
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(window.location.href);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        // Function to display the book details
+        function displayBookDetails(data) {
+            var bookContainer = $("#bookContainer");
+
+            var book = data.volumeInfo;
+            var title = book.title;
+            var authors = book.authors ? book.authors.join(", ") : "Unknown";
+            var description = book.description ? book.description : "No description available";
+            var thumbnail = book.imageLinks ? book.imageLinks.thumbnail : "https://via.placeholder.com/128x192.png?text=No+Image";
+            var retailPrice = book.saleInfo && book.saleInfo.retailPrice ? book.saleInfo.retailPrice.amount + " " + book.saleInfo.retailPrice.currencyCode : "999/-";
+
+            var titleElement = $("<h2>").text(title);
+            var authorsElement = $("<p>").text("Author(s): " + authors);
+            var descriptionElement = $("<p>").text(description);
+            var thumbnailElement = $("<img>").attr("src", thumbnail);
+            var retailPriceElement = $("<p>").text("Retail Price: " + retailPrice);
+
+            var paymentButton = $("<button>").text("Proceed to Payment").click(function() {
+                redirectToPaymentPage();
+            });
+
+            bookContainer.append(titleElement, authorsElement, descriptionElement, thumbnailElement, retailPriceElement, paymentButton);
+        }
+
+        // Function to redirect to the payment page
+        function redirectToPaymentPage() {
+            // Retrieve the book ID from the URL parameter
+            var bookId = getParameterByName("id");
+
+            // Redirect to the payment page with the book ID as a URL parameter
+            window.location.href = "payment.html?bookId=" + bookId;
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial,sans-serif;
+            background-image: url("1.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+        }
+        #bookContainer {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        #bookContainer img {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .payment-button {
+        display: inline-block;
+        padding: 30px 40px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    .payment-button:hover {
+        background-color: #45a049;
+    }
+    </style>
+</head>
+<body>
+    <div id="bookContainer"></div>
+</body>
+</html>
